@@ -1,0 +1,17 @@
+.contactWrapper {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    width: 260px;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 7px;
+}
+
+.deleteBtn {
+    height: 30px;
+}
+
+.icon {
+    margin-right: 10px;
+}

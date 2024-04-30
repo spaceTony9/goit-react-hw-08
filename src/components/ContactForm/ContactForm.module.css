@@ -1,0 +1,21 @@
+.form {
+    max-width: 300px;
+    border: 1px solid black;
+    padding: 15px;
+    margin-bottom: 40px;
+}
+
+
+.inputField {
+    margin-bottom: 20px;
+    width: calc(100% - 10px);
+    height: 30px;
+}
+
+
+.formButton {
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+    font-size: 18px;
+}
