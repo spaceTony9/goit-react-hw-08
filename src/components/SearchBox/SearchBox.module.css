@@ -1,5 +1,4 @@
 .filterInput {
-    margin: 0 0 30px 0;
-    width: 250px;
-    height: 25px;
+    margin: 10px;
+    display: block;
 }

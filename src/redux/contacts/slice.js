@@ -1,6 +1,7 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { fetchItems, addContact, deleteContact } from './contactsOps.js';
-import { filter } from './filtersSlice.js';
+import { fetchItems, addContact, deleteContact, patchContact } from './operations.js';
+import { filter } from '../filters/slice.js';
+import { CONSTANTS } from '../../components/constants.js';
 
 const handlePending = state => {
   state.loading = true;
@@ -11,7 +12,7 @@ const handleRejected = (state, action) => {
   state.error = action.payload;
 };
 
-export const contactsSlice = createSlice({
+export const slice = createSlice({
   name: 'contacts',
   initialState: {
     items: [],
@@ -40,11 +41,14 @@ export const contactsSlice = createSlice({
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.loading = false;
         state.error = false;
-        state.items = state.items.filter(
-          item => item.name !== action.payload.name
-        );
+        state.items = state.items.filter(item => item.name !== action.payload.name);
       })
-      .addCase(deleteContact.rejected, handleRejected);
+      .addCase(deleteContact.rejected, handleRejected)
+      .addCase(patchContact.fulfilled, (state, action) => {
+        state.items = state.items.map(item =>
+          item.id === action.payload.id ? action.payload : item
+        );
+      });
   },
   selectors: {
     loading: state => state.loading,
@@ -52,11 +56,14 @@ export const contactsSlice = createSlice({
     error: state => state.error,
   },
 });
-export const { loading, error, contacts } = contactsSlice.selectors;
-export const contactsReducer = contactsSlice.reducer;
+export const { loading, error, contacts } = slice.selectors;
+export const contactsReducer = slice.reducer;
 export const selectFilteredContacts = createSelector(
   [contacts, filter],
   (contacts, filter) => {
+    if (/^\d+$/.test(filter)) {
+      return contacts.filter(contact => contact.number.includes(filter));
+    }
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );

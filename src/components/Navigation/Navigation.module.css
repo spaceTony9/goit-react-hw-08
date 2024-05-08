@@ -1,0 +1,13 @@
+.navWrapper {
+    display: flex;
+    gap: 15px;
+}
+
+.navLink {
+    font-size: 30px;
+}
+
+.navWrapper a.navLinkActive {
+    color: red;
+    font-weight: bold;
+}

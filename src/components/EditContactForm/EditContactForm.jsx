@@ -1,10 +1,9 @@
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
-import { useId } from 'react';
-import css from './ContactForm.module.css';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contacts/operations.js';
+import { useId } from 'react';
+import { patchContact } from '../../redux/contacts/operations.js';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import css from './EditContactForm.module.css';
 import { Button } from '@mui/material';
 
 const FeedbackSchema = Yup.object().shape({
@@ -18,19 +17,23 @@ const FeedbackSchema = Yup.object().shape({
     .required('Required'),
 });
 
-const ContactForm = ({ notifySuccess }) => {
+const EditContactForm = ({
+  closeModal,
+  editedContact: { notifySuccess, id, name: initName, number: initNumber },
+}) => {
   const dispatch = useDispatch();
   const nameFieldId = useId();
   const numberFieldId = useId();
 
   function handleSubmit(values, actions) {
     dispatch(
-      addContact({
-        id: nanoid(),
+      patchContact({
+        id,
         name: values.contactName,
         number: values.contactPhone,
       })
     );
+    closeModal();
     notifySuccess();
     actions.resetForm();
   }
@@ -38,8 +41,8 @@ const ContactForm = ({ notifySuccess }) => {
   return (
     <Formik
       initialValues={{
-        contactName: '',
-        contactPhone: '',
+        contactName: initName,
+        contactPhone: initNumber,
       }}
       onSubmit={handleSubmit}
       validationSchema={FeedbackSchema}
@@ -65,20 +68,12 @@ const ContactForm = ({ notifySuccess }) => {
           ></Field>
           <ErrorMessage name="contactPhone" as="span" />
         </div>
-        <Button
-          sx={{
-            color: 'black',
-            display: 'block',
-            margin: '0 auto',
-            fontSize: 18,
-          }}
-          type="submit"
-        >
-          Add contact
+        <Button className={css.formButton} type="submit">
+          Edit Contact
         </Button>
       </Form>
     </Formik>
   );
 };
 
-export default ContactForm;
+export default EditContactForm;

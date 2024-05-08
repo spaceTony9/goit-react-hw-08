@@ -1,0 +1,14 @@
+.authWrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.navLink {
+    font-size: 30px;
+}
+
+
+.authWrapper a.navLinkActive {
+    color: red;
+    font-weight: bold;
+}

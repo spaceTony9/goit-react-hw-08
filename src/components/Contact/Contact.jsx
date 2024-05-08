@@ -1,12 +1,10 @@
 import css from './contact.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact } from '../../redux/contactsOps.js';
-import { loading } from '../../redux/contactsSlice.js';
+import { useSelector } from 'react-redux';
+import { loading } from '../../redux/contacts/slice.js';
 
-const Contact = ({ contactData: { name, number, id } }) => {
-  const dispatch = useDispatch();
+const Contact = ({ handleDelete, handleEdit, contactData: { name, number, id } }) => {
   const selectLoading = useSelector(loading);
   return (
     <div className={css.contactWrapper}>
@@ -20,13 +18,21 @@ const Contact = ({ contactData: { name, number, id } }) => {
           {number}
         </p>
       </div>
-      <button
-        disabled={selectLoading}
-        className={css.deleteBtn}
-        onClick={() => dispatch(deleteContact(id))}
-      >
-        Delete
-      </button>
+      <div className={css.buttonsWrapper}>
+        <button
+          onClick={() => handleEdit({ name, number, id })}
+          className={css.deleteBtn}
+        >
+          Edit
+        </button>
+        <button
+          disabled={selectLoading}
+          className={css.deleteBtn}
+          onClick={() => handleDelete({ name, number, id })}
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,15 @@
+.UserMenuWrapper {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-content: center;
+}
+
+.welcomeText {
+    line-height: 1.75;
+    letter-spacing: 0.02em;
+    font-weight: lighter;
+    padding: 2px 0 7px 0;
+    font-size: 30px;
+    text-align: center;
+}

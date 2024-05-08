@@ -1,33 +1,50 @@
-import {
-  ContactForm,
-  ContactList,
-  SearchBox,
-  Loader,
-  Error,
-} from './components/index.jsx';
+import { Layout, RestrictedRoute, PrivateRoute, Loader } from './components/index.js';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchItems } from './redux/contactsOps.js';
-import { error, loading } from './redux/contactsSlice.js';
+import { Route, Routes } from 'react-router';
+import { ContactsPage, HomePage, LoginPage, RegisterPage } from './pages/index.js';
+import { refreshUser } from './redux/auth/operations.js';
+import { selectIsLoading } from './redux/auth/slice.js';
+import { loading } from './redux/contacts/slice.js';
+import Modal from 'react-modal';
+import { CONSTANTS } from './components/constants.js';
 
 const App = () => {
   const dispatch = useDispatch();
-  const selectError = useSelector(error);
-  const selectLoading = useSelector(loading);
+
+  const selectLoadingAuth = useSelector(selectIsLoading);
+  const selectLoadingContacts = useSelector(loading);
 
   useEffect(() => {
-    dispatch(fetchItems());
+    dispatch(refreshUser());
   }, [dispatch]);
 
   return (
-    <div>
-      <h1>Phonebook</h1>
-      <ContactForm />
-      <SearchBox />
-      {selectLoading && <Loader />}
-      {selectError && <Error />}
-      <ContactList />
-    </div>
+    <Layout>
+      <Routes forceRefresh={true}>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<RegisterPage />} />
+          }
+        />
+        <Route
+          path="/login"
+          element={<RestrictedRoute redirectTo="/contacts" component={<LoginPage />} />}
+        />
+        <Route
+          path="/contacts"
+          element={<PrivateRoute redirectTo="/login" component={<ContactsPage />} />}
+        />
+      </Routes>
+      <Modal
+        style={CONSTANTS.modalStyles}
+        isOpen={selectLoadingAuth || selectLoadingContacts}
+      >
+        <Loader />
+      </Modal>
+    </Layout>
   );
 };
 

@@ -1,0 +1,37 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    width: 300px;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.inputField {
+    width: 100%; /* Full width of the form */
+    height: 35px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Styling for error messages */
+.errorMessage {
+    color: red;
+    font-size: 12px;
+}
+
+/* Container for buttons */
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Button styling */
+
+.button:hover {
+    background-color: #003580;
+}

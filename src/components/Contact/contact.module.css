@@ -15,3 +15,8 @@
 .icon {
     margin-right: 10px;
 }
+
+.buttonsWrapper {
+    display: flex;
+    gap: 15px;
+}
