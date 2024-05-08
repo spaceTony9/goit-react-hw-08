@@ -2,6 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { fetchItems, addContact, deleteContact, patchContact } from './operations.js';
 import { filter } from '../filters/slice.js';
 import { CONSTANTS } from '../../components/constants.js';
+import { logoutUser } from '../auth/operations.js';
 
 const handlePending = state => {
   state.loading = true;
@@ -48,6 +49,9 @@ export const slice = createSlice({
         state.items = state.items.map(item =>
           item.id === action.payload.id ? action.payload : item
         );
+      })
+      .addCase(logoutUser.fulfilled, state => {
+        state.items = [];
       });
   },
   selectors: {
